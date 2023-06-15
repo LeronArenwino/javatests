@@ -2,8 +2,10 @@ package com.leronarenwino.util;
 
 public class StringUtil {
 
-    public String repeat(String str, int times){
-        return null;
+    public static String repeat(String str, int times) {
+
+        return String.valueOf(str).repeat(Math.max(0, times));
+
     }
 
 }
