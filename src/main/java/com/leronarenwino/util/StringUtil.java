@@ -4,7 +4,9 @@ public class StringUtil {
 
     public static String repeat(String str, int times) {
 
-        return String.valueOf(str).repeat(Math.max(0, times));
+        if (times < 0) throw new IllegalArgumentException("Negative times not allowed.");
+
+        return String.valueOf(str).repeat(times);
 
     }
 
