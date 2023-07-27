@@ -9,6 +9,10 @@ public class Movie {
     private final int minutes;
     private final Genre genre;
 
+    public Movie(String name, int minutes, Genre genre) {
+        this(null, name, minutes, genre);
+    }
+
     public Movie(Integer id, String name, int minutes, Genre genre) {
         this.id = id;
         this.name = name;
