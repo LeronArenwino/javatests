@@ -1,6 +1,7 @@
 package com.leronarenwino.movies.data;
 
 import com.leronarenwino.movies.model.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,23 +18,35 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MovieRepositoryIntegrationTest {
 
-    @Test
-    void load_all_movies() throws SQLException {
+    private static MovieRepositoryJdbc movieRepository;
 
+    @BeforeAll
+    static void setUp() throws SQLException {
         DataSource dataSource = new DriverManagerDataSource("jdbc:h2:mem:test;MODE=MYSQL", "sa", "sa");
 
         ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("sql-scripts/test-data.sql"));
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        MovieRepositoryJdbc movieRepository = new MovieRepositoryJdbc(jdbcTemplate);
+        movieRepository = new MovieRepositoryJdbc(jdbcTemplate);
+    }
+
+    @Test
+    void load_all_movies() {
 
         Collection<Movie> movies = movieRepository.findAll();
 
         assertEquals(movies, Arrays.asList(
-                new Movie(1, "Dark Knight", 152, Genre.ACTION) ,
-                new Movie(2, "Memento", 113, Genre.THRILLER) ,
+                new Movie(1, "Dark Knight", 152, Genre.ACTION),
+                new Movie(2, "Memento", 113, Genre.THRILLER),
                 new Movie(3, "Matrix", 136, Genre.ACTION)
         ));
     }
+
+    @Test
+    void load_movie_by_id() {
+        Movie movie = movieRepository.findById(2);
+        assertEquals(movie, new Movie(2, "Memento", 113, Genre.THRILLER));
+    }
+
 }
