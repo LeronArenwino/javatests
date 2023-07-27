@@ -24,6 +24,10 @@ public class Movie {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getMinutes() {
         return minutes;
     }
